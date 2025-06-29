@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@alpinejs/mask": "^3.14.9",
-        "alpinejs": "^3.14.9"
+        "alpinejs": "^3.14.9",
+        "sweetalert2": "^11.22.2"
     }
 }

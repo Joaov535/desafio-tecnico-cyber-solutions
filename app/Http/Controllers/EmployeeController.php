@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FormFuncionariosRequest;
-use App\Models\Funcionario;
+use App\Http\Requests\FormEmployeesRequest;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
-class FuncionarioController extends Controller
+class EmployeeController extends Controller
 {
-    public function listar($cpf) {}
+    public function listar()
+    {
+        $employees = Employee::all();
+        return response()->json($employees);
+    }
 
-    public function salvar(FormFuncionariosRequest $request)
+    public function salvar(FormEmployeesRequest $request)
     {
 
         $validated = $request->validated();
 
-        if (Funcionario::create($validated)) {
+        if (Employee::create($validated)) {
             return response()->json(['message' => 'Funcionário cadastrado!'], 201);
         }
 

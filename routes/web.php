@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\EmployeeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,8 +17,8 @@ Route::middleware(['auth'])->group(function () {
         return view('system.home');
     });
 
-    Route::get('funcionario/{cpf}', [FuncionarioController::class, 'listar']);
-    Route::post('funcionario', [FuncionarioController::class, 'salvar']);
-    Route::put('funcionario/{cpf}', [FuncionarioController::class, 'alterar']);
-    Route::delete('funcionario/{cpf}', [FuncionarioController::class, 'deletar']);
+    Route::get('employees', [EmployeeController::class, 'listar']);
+    Route::post('employee', [EmployeeController::class, 'salvar']);
+    Route::put('employee/{cpf}', [EmployeeController::class, 'alterar']);
+    Route::delete('employee/{cpf}', [EmployeeController::class, 'deletar']);
 });
