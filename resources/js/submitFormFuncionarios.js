@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default function submitFormFuncionarios() {
     return {
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -9,37 +11,45 @@ export default function submitFormFuncionarios() {
             dataAdmissao: '',
             salario: '',
         },
+        errors: {},
         async submitForm() {
-            this.form.cpf = this.form.cpf.replace(/\D/g, '')
+            this.form.cpf = this.form.cpf.replace(/\D/g, '');
+
+            if (Number(this.form.salario) == NaN) {
+                this.form.salario = null;
+            } else {
+                this.form.salario = Number((this.form.salario).replace(',', '.'));
+            }
+
+            this.errors = {};
 
             try {
-                const response = await fetch('/funcionario', {
-                    method: 'POST',
+                const response = await axios.post('/funcionario', this.form, {
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': this.csrf,
-                    },
-                    body: JSON.stringify(this.form),
+                    }
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json()
-                    throw errorData
-                }
+                alert('Enviado com sucesso!');
+                console.log(response.data);
 
-                const data = await response.json()
-                alert('Enviado com sucesso!')
-                console.log(data);
-
-                this.form.nome = ''
-                this.form.email = ''
-                this.form.cpf = ''
-                this.form.cargo = ''
-                this.form.admissao = ''
-                this.form.salario = ''
+                this.form = {
+                    nome: '',
+                    email: '',
+                    cpf: '',
+                    cargo: '',
+                    dataAdmissao: '',
+                    salario: '',
+                };
             } catch (error) {
-                alert('Erro ao enviar o formulário')
-                console.error(error)
+                if (error.response && error.response.status === 422) {
+                    this.errors = error.response.data.errors;
+                } else {
+                    alert('Erro ao enviar o formulário');
+                    console.error(error);
+                }
             }
         }
     };

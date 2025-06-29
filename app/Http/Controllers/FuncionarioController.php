@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FormFuncionariosRequest;
 use App\Models\Funcionario;
 use Illuminate\Http\Request;
 
@@ -9,27 +10,16 @@ class FuncionarioController extends Controller
 {
     public function listar($cpf) {}
 
-    public function salvar(Request $request)
+    public function salvar(FormFuncionariosRequest $request)
     {
-        try {
-            $validated = $request->validate(
-                [
-                    'nome' => 'required|max:150',
-                    'email' => 'required|max:150',
-                    'cpf' => 'required|max:11',
-                    'cargo' => 'nullable|max:100',
-                    'dataAdmissao' => 'nullable|date',
-                    'salario' => 'nullable|numeric|min:0'
-                ]
-            );
 
-            Funcionario::create($validated);
+        $validated = $request->validated();
 
+        if (Funcionario::create($validated)) {
             return response()->json(['message' => 'Funcionário cadastrado!'], 201);
-        } catch (\Exception $e) {
-            dd($e);
-            return response()->json(['message' => 'Falha ao cadastrar funcionario'], 201);
         }
+
+        return response()->json(['message' => 'Erro ao cadastrar funcionário!'], 500);
     }
 
     public function alterrar($cpf) {}
