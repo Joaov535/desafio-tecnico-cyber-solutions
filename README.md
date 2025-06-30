@@ -6,7 +6,7 @@ Este projeto é um desafio técnico desenvolvido com o framework Laravel.
 
 Antes de começar, verifique se você possui instalado:
 
--   PHP (>= 8.1)
+-   PHP
 -   Composer
 -   Node.js e NPM
 -   MySQL ou outro banco de dados compatível
