@@ -27,5 +27,16 @@ class EmployeeController extends Controller
     }
 
     public function alterrar($cpf) {}
-    public function deletar($cpf) {}
+    public function deletar($cpf)
+    {
+        $funcionario = Employee::where('cpf', $cpf)->first();
+
+        if (!$funcionario) {
+            return response()->json(['message' => 'Não encontramos um funcionário com esses dados.'], 404);
+        }
+
+        $funcionario->delete();
+
+        return response()->json(['message' => 'Funcionário excluído com sucesso'], 200);
+    }
 }
